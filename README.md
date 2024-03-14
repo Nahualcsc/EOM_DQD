@@ -26,7 +26,8 @@ There are currently six possible calculations implemented
 5. ### colormap_efficiency_vary_U:
    The thermal efficiency  $\eta\eta_C$ is computed as a function of the $\varepsilon=\frac{\varepsilon_1+\varepsilon_2}{2}$ and the bias voltage $V$.
    Extra parameters to define: ```delta_v, v_range, V_range```.
-6. ### colormap_residues_stability_diagram
+6. ### colormap_residues_stability_diagram:
+   The residues (numerators of the spectral function), 
 ## Program usage
 The program can be run by typing in a linux shell: ```python3 inputs.py ```
 
