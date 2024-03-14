@@ -27,7 +27,7 @@ There are currently six possible calculations implemented
    The thermal efficiency  $\eta/\eta_C$ is computed as a function of the $\varepsilon=\frac{\varepsilon_1+\varepsilon_2}{2}$ and the bias voltage $V$.
    Extra parameters to define: ```delta_v, v_range, V_range```.
 6. ### colormap_residues_stability_diagram:
-   The residues (numerators of the spectral function), the stability diagram ($n_1+5*n_2$), and the steady-state charge $I$ and heat $Q$ currents as a function of the external gates $\varepsilon_1$ and  $\varepsilon_2$.
+   The residues (numerators of the Green's function), the stability diagram ($n_1+5*n_2$), and the steady-state charge $I$ and heat $Q$ currents as a function of the external gates $\varepsilon_1$ and  $\varepsilon_2$.
     Extra parameters to define: ```v1_range, v2_range```.
 
 For ```calculate_densities_vs_gate``` and ```calculate_spectral_function``` the calculation can be compared against the Hartree EOM (EOMH) result. To activate it: ```compute_EOMH= True```. Note that EOMH takes more time to evaluate.
