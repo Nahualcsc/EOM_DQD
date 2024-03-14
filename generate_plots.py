@@ -138,7 +138,7 @@ def plot_colormaps_currents(v_range,V_range,dens_0,dens_1,I_EOM0,Q_EOM0):
     axs[2].tick_params(axis='x', which='major', labelsize=fontsize)
     axs[0].set_ylabel('$V$', fontsize=fontsize)
     axs[0].text(0.5, 0.05, '$N$', transform=axs[0].transAxes, ha='center', va='center', color='white', fontsize=fontsize)
-    axs[1].text(0.5, 0.05, '$I/\\gamma$', transform=axs[1].transAxes, ha='center', va='center', color='white', fontsize=fontsize)
+    axs[1].text(0.5, 0.05, '$I/\\gamma$',colormap_residues_stability_diagram transform=axs[1].transAxes, ha='center', va='center', color='white', fontsize=fontsize)
     axs[2].text(0.5, 0.05, '$Q/\\gamma$', transform=axs[2].transAxes, ha='center', va='center', color='white', fontsize=fontsize)
     fig.subplots_adjust(wspace=0.15, hspace=0.3) 
     fig.tight_layout(pad=1.0)  
@@ -163,7 +163,7 @@ def plot_colormap_efficiency_vary_U(v_range,V_range,eficciency_norm_EOM0):
 ###############################################
 ###############################################
 
-def plot_colormap_correlators_stability_diagram(v1_range, v2_range, I_values, Q_values,Z, nsum):
+def plot_colormap_residues_stability_diagram(v1_range, v2_range, I_values, Q_values,Z, nsum):
     if not os.path.exists('colormaps'): os.makedirs('colormaps')
     fig, axs = plt.subplots(2, 3, figsize=(12, 8))  # Adjusted figure size
     plt.subplots_adjust(left=0.1, right=0.92, bottom=0.1, top=0.95, wspace=0.05, hspace=0.05) 
