@@ -121,7 +121,7 @@ if colormap_efficiency_vary_U:
 ###############################################
 ###############################################
 
-if colormap_correlators_stability_diagram:
+if colormap_residues_stability_diagram:
     Z = np.zeros((len(v1_range), len(v2_range), 6))  # For z1 to z6
     I_values = np.zeros((len(v1_range), len(v2_range)))
     Q_values = np.zeros((len(v1_range), len(v2_range)))
@@ -134,7 +134,7 @@ if colormap_correlators_stability_diagram:
             I, Q = EOM.Current(EOM.n1, EOM.n2)
             I_values[i, j] = I*100
             Q_values[i, j] = Q*100
-    plot_colormap_correlators_stability_diagram(v1_range, v2_range, I_values, Q_values,Z, nsum)
+    plot_colormap_residues_stability_diagram(v1_range, v2_range, I_values, Q_values,Z, nsum)
 
 
 ###############################################
