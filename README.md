@@ -19,16 +19,21 @@ There are currently six possible calculations implemented
    Extra parameters to define: ```w_range, v1, v2```.
 4. ### colormap_spectral_function:
    The total spectral function $A=-\sum_{\alpha}\text{Im}\[G_\alpha(\omega)\]/\pi$ is calculated as a function of the inter-Coulomb interaction $U_{12}$ and  frequency $\omega$.
+   
    Extra parameters to define: ```w_range, U12_range```.
+   
    Implemented at the particle-hole symmetry point $\varepsilon_\alpha=-U_\alpha/2-U_{12}$, to set other gate levels go to line 78 of main.py
-5. ### colormaps_currents:
-   The local occupations, as well as the steady-state charge $I$ and heat $Q$ currents, are computed as a function of the external gate $\varepsilon=\frac{\varepsilon_1+\varepsilon_2}{2}$ and the bias voltage $V$. 
+6. ### colormaps_currents:
+   The local occupations, as well as the steady-state charge $I$ and heat $Q$ currents, are computed as a function of the external gate $\varepsilon=\frac{\varepsilon_1+\varepsilon_2}{2}$ and the bias voltage $V$.
+   
    Extra parameters to define: ```delta_v, v_range, V_range```.
-6. ### colormap_efficiency_vary_U:
+8. ### colormap_efficiency_vary_U:
    The thermal efficiency  $\eta/\eta_C$ is computed as a function of the $\varepsilon=\frac{\varepsilon_1+\varepsilon_2}{2}$ and the bias voltage $V$.
+   
    Extra parameters to define: ```delta_v, v_range, V_range```.
-7. ### colormap_residues_stability_diagram:
+10. ### colormap_residues_stability_diagram:
    The residues (numerators of the Green's function), the stability diagram ($n_1+5n_2$), and the steady-state charge $I$ and heat $Q$ currents as a function of the external gates $\varepsilon_1$ and  $\varepsilon_2$.
+   
     Extra parameters to define: ```v1_range, v2_range```.
 
 For ```calculate_densities_vs_gate``` and ```calculate_spectral_function``` the calculation can be compared against the Hartree EOM (EOMH) result. To activate it: ```compute_EOMH= True```. Note that EOMH takes more time to evaluate.
