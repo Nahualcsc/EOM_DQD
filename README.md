@@ -11,22 +11,23 @@ The spectral function of the system $A=-\sum_{\alpha}\text{Im}\[G_\alpha(\omega)
 The parameters and interactions to be always set up in ```inputs.py``` are: ```T, delta_T, gamma, V, U1, U2, U12```. 
 There are currently six possible calculations implemented
 1. ### calculate_densities_vs_gate:
-   It computes the local occupations $n_\alpha$ as a function of the external gate $\varepsilon=\frac{\varepsilon_1+\varepsilon_2}{2}$. The steady-state charge $I$ and heat $Q$ currents are also computed in a non-equilibrium setup. For finite thermal gradient $\delta T$, the thermal efficiency $\eta/\eta_C$(normalized over the Carnot efficiency) is also computed.
+   The local occupations $n_\alpha$ are computed as a function of the external gate $\varepsilon=\frac{\varepsilon_1+\varepsilon_2}{2}$. The steady-state charge $I$ and heat $Q$ currents are also computed in a non-equilibrium setup. For finite thermal gradient $\delta T$, the thermal efficiency $\eta/\eta_C$ (normalized over the Carnot efficiency) is also computed.
+   
    Extra parameters to define: ```v_range, delta_v```.
-2. ### calculate_spectral_function:
+3. ### calculate_spectral_function:
    The total spectral function $A=-\sum_{\alpha}\text{Im}\[G_\alpha(\omega)\]/\pi$ is calculated as a function of the frequency $\omega$.
    Extra parameters to define: ```w_range, v1, v2```.
-3. ### colormap_spectral_function:
+4. ### colormap_spectral_function:
    The total spectral function $A=-\sum_{\alpha}\text{Im}\[G_\alpha(\omega)\]/\pi$ is calculated as a function of the inter-Coulomb interaction $U_{12}$ and  frequency $\omega$.
    Extra parameters to define: ```w_range, U12_range```.
    Implemented at the particle-hole symmetry point $\varepsilon_\alpha=-U_\alpha/2-U_{12}$, to set other gate levels go to line 78 of main.py
-4. ### colormaps_currents:
+5. ### colormaps_currents:
    The local occupations, as well as the steady-state charge $I$ and heat $Q$ currents, are computed as a function of the external gate $\varepsilon=\frac{\varepsilon_1+\varepsilon_2}{2}$ and the bias voltage $V$. 
    Extra parameters to define: ```delta_v, v_range, V_range```.
-5. ### colormap_efficiency_vary_U:
+6. ### colormap_efficiency_vary_U:
    The thermal efficiency  $\eta/\eta_C$ is computed as a function of the $\varepsilon=\frac{\varepsilon_1+\varepsilon_2}{2}$ and the bias voltage $V$.
    Extra parameters to define: ```delta_v, v_range, V_range```.
-6. ### colormap_residues_stability_diagram:
+7. ### colormap_residues_stability_diagram:
    The residues (numerators of the Green's function), the stability diagram ($n_1+5n_2$), and the steady-state charge $I$ and heat $Q$ currents as a function of the external gates $\varepsilon_1$ and  $\varepsilon_2$.
     Extra parameters to define: ```v1_range, v2_range```.
 
