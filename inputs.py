@@ -8,6 +8,8 @@ U1 = 2.
 U2 =  3.
 U12 = 1.
 
+## uncoment the lines under the calculation to perform 
+
 calculate_densities_vs_gate = False
 #v_range = np.linspace(-2,1,30)
 #delta_v = 0.
