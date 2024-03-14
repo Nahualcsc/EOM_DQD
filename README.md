@@ -33,7 +33,7 @@ There are currently six possible calculations implemented
 For ```calculate_densities_vs_gate``` and ```calculate_spectral_function``` the calculation can be compared against the Hartree EOM (EOMH) result. To activate it: ```compute_EOMH= False```. Note that EOMH takes more time to evaluate.
 
 ## Program usage
-The program can be run by typing in a linux shell: ```python3 inputs.py ```
+The program can be run by typing in a linux shell: ```python3 main.py ```
 
 ## System requirements
 Python3 is required and the following Python packages:
