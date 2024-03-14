@@ -30,7 +30,7 @@ There are currently six possible calculations implemented
    The residues (numerators of the spectral function), the stability diagram ($n_1+5*n_2$), and the steady-state charge $I$ and heat $Q$ currents as a function of the external gates $\varepsilon_1$ and  $\varepsilon_2$.
     Extra parameters to define: ```v1_range, v2_range```.
 
-For ```calculate_densities_vs_gate``` and ```calculate_spectral_function``` the calculation can be compared against the Hartree EOM (EOMH) result. To activate it: ```compute_EOMH= False```. Note that EOMH takes more time to evaluate.
+For ```calculate_densities_vs_gate``` and ```calculate_spectral_function``` the calculation can be compared against the Hartree EOM (EOMH) result. To activate it: ```compute_EOMH= True```. Note that EOMH takes more time to evaluate.
 
 ## Program usage
 The program can be run by typing in a linux shell: ```python3 main.py ```
