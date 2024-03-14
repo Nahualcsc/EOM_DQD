@@ -32,7 +32,7 @@ colormap_efficiency_vary_U = False
 #v_range = np.linspace(-4 , 1, 100)
 #V_range = np.linspace(-0.2, 0.2, 100)
 
-colormap_correlators_stability_diagram = False
+colormap_residues_stability_diagram = False
 #v1_range = np.linspace(-6, 1., 100)
 #v2_range = np.linspace(-6, 1., 100)
 
