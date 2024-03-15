@@ -28,7 +28,7 @@ There are currently six possible calculations implemented
    The local occupations, as well as the steady-state charge $I$ and heat $Q$ currents, are computed as a function of the external gate $\varepsilon=\frac{\varepsilon_1+\varepsilon_2}{2}$ and the bias voltage $V$.
    
    Extra parameters to define: ```delta_v, v_range, V_range```.
-5. ### colormap_efficiency_vary_U:
+5. ### colormap_efficiency:
    The thermal efficiency  $\eta/\eta_C$ is computed as a function of the $\varepsilon=\frac{\varepsilon_1+\varepsilon_2}{2}$ and the bias voltage $V$.
    
    Extra parameters to define: ```delta_v, v_range, V_range```.
