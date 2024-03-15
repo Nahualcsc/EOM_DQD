@@ -147,7 +147,7 @@ def plot_colormaps_currents(v_range,V_range,dens_0,dens_1,I_EOM0,Q_EOM0):
 ###############################################
 ###############################################
 
-def plot_colormap_efficiency_vary_U(v_range,V_range,eficciency_norm_EOM0):
+def plot_colormap_efficiency(v_range,V_range,eficciency_norm_EOM0):
     if not os.path.exists('colormaps'): os.makedirs('colormaps')
     fig, axs = plt.subplots(1, 1, figsize=(6, 5), sharex=True) 
     c = axs.imshow(eficciency_norm_EOM0, extent=[v_range.min(), v_range.max(), V_range.min(), V_range.max()], origin='lower', aspect='auto', cmap='inferno')
@@ -158,7 +158,7 @@ def plot_colormap_efficiency_vary_U(v_range,V_range,eficciency_norm_EOM0):
     axs.set_ylabel('V', fontsize=20)  
     axs.tick_params(axis='both', which='major', labelsize=18) 
     plt.tight_layout()
-    plt.savefig('./colormaps/efficiency_U1_{}_U2_{}_T_{}_g1_{}_g2_{}.png'.format(U1, U2, T, gamma1, gamma2), dpi=300)
+    plt.savefig('./colormaps/efficiency_U1_{}_U2_{}_U12_{}_T_{}_g1_{}_g2_{}.png'.format(U1, U2, U12, T, gamma1, gamma2), dpi=300)
 
 ###############################################
 ###############################################
