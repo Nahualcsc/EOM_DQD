@@ -11,7 +11,7 @@ The spectral function of the system $A=-\sum_{\alpha}\text{Im}\[G_\alpha(\omega)
 The parameters and interactions to be always set up in ```inputs.py``` are: ```T, delta_T, gamma, V, U1, U2, U12```. 
 There are currently six possible calculations implemented
 1. ### calculate_densities_vs_gate:
-   The local occupations $n_\alpha$ are computed as a function of the external gate $\varepsilon=\frac{\varepsilon_1+\varepsilon_2}{2}$. The steady-state charge $I$ and heat $Q$ currents are also computed in a non-equilibrium setup. For finite thermal gradient $\delta T$, the thermal efficiency $\eta/\eta_C$ (normalized over the Carnot efficiency) is also computed.
+   The local occupations $n_\alpha$ are computed as a function of the external gate $\varepsilon=\frac{\varepsilon_1+\varepsilon_2}{2}$. The steady-state charge $I$ and heat $Q$ currents are also computed in a non-equilibrium setup. For finite thermal gradient $\Delta T$, the thermal efficiency $\eta/\eta_C$ (normalized over the Carnot efficiency) is also computed.
    
    Extra parameters to define: ```v_range, delta_v```.
 2. ### calculate_spectral_function:
