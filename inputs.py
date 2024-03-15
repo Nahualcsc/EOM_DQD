@@ -29,7 +29,7 @@ colormaps_currents = False
 #v_range = np.linspace(-5, 2, 100)
 #V_range = np.linspace(-4, 4, 100)
 
-colormap_efficiency_vary_U = False
+colormap_efficiency = False
 #delta_v = 0.
 #v_range = np.linspace(-4 , 1, 100)
 #V_range = np.linspace(-0.2, 0.2, 100)
