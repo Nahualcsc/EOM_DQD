@@ -107,7 +107,7 @@ if colormaps_currents:
 ###############################################
 ###############################################
 
-if colormap_efficiency_vary_U:
+if colormap_efficiency:
     eficciency_norm_EOM0 = np.zeros((len(V_range), len(v_range)))  # Initialize the efficiency array
     for i, V in enumerate(tqdm(V_range)):
         for j, v in enumerate(v_range):
@@ -116,7 +116,7 @@ if colormap_efficiency_vary_U:
             EOM = Equations_of_motion(v1, v2, V, T + 0.5 * delta_T, T - 0.5 * delta_T, U1, U2, U12, gamma1, gamma2)
             I, Q = EOM.Current(EOM.n1, EOM.n2)
             eficciency_norm_EOM0[i, j], _ = EOM.efficiency(I, Q)
-    plot_colormap_efficiency_vary_U(v_range,V_range,eficciency_norm_EOM0)
+    plot_colormap_efficiency(v_range,V_range,eficciency_norm_EOM0)
 
 ###############################################
 ###############################################
