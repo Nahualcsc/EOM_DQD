@@ -9,7 +9,7 @@ The spectral function of the system $A=-\sum_{\alpha}\text{Im}\[G_\alpha(\omega)
 
 ## Parameters, Interactions, and calculation setup
 The parameters and interactions to be always set up in ```inputs.py``` are: ```T, delta_T, gamma, V, U1, U2, U12```. 
-There are currently seven possible calculations implemented and another six animations related
+There are currently six possible calculations implemented and another six animations related
 1. ### calculate_densities_vs_gate:
    The local occupations $n_\alpha$ are computed as a function of the external gate $\varepsilon=\frac{\varepsilon_1+\varepsilon_2}{2}$. The steady-state charge $I$ and heat $Q$ currents are also computed in a non-equilibrium setup. For finite thermal gradient $\Delta T$, the thermal efficiency $\eta/\eta_C$ (normalized over the Carnot efficiency) is also computed.
    
@@ -23,7 +23,7 @@ There are currently seven possible calculations implemented and another six anim
    
    Extra parameters to define: ```w_range, U12_range```.
    
-   Implemented at the particle-hole symmetry point $\varepsilon_\alpha=-U_\alpha/2-U_{12}$, to set other gate levels go to line 78 of main.py
+   Implemented at the particle-hole symmetry point $\varepsilon_\alpha=-U_\alpha/2-U_{12}$, to set other gate levels go to line 80 of main.py
 4. ### colormaps_currents:
    The local occupations, as well as the steady-state charge $I$ and heat $Q$ currents, are computed as a function of the external gate $\varepsilon=\frac{\varepsilon_1+\varepsilon_2}{2}$ and the bias voltage $V$.
    
@@ -33,28 +33,33 @@ There are currently seven possible calculations implemented and another six anim
    
    Extra parameters to define: ```delta_v, v_range, V_range```.
    
-7. ### colormap_SD:
+6. ### colormap_SD:
    The residues (numerators of the Green's function), the stability diagram ($n_1+5n_2$), and the steady-state charge $I$ and heat $Q$ currents as a function of the external gates $\varepsilon_1$ and  $\varepsilon_2$.
    
     Extra parameters to define: ```v1_range, v2_range```.
 
 For ```calculate_densities_vs_gate``` and ```calculate_spectral_function``` the calculation can be compared against the Hartree EOM (EOMH) result. To activate it: ```compute_EOMH= True```. Note that EOMH takes more time to evaluate.
 
- 8. ### movie_spectral_function_vary_dv:
+ 7. ### movie_spectral_function_vary_dv:
     Animation of ```calculate_spectral_function```  for ```dv_range```.
- 10. ### movie_spectral_function_vary_V:
+ 8. ### movie_spectral_function_vary_V:
      Animation of ```calculate_spectral_function```  for ```dV_range```.
- 12.  ### movie_currents_vary_U12:
+ 9. ### movie_currents_vary_U12:
      Animation of ```colormaps_currents``` for ```U12_range```.
- 14.  ### movie_SD_vary_V:
+ 9. ### movie_SD_vary_V:
      Animation of ```colormap_SD``` for ```V_range```.
- 16.  ### movie_SD_vary_U12:
+ 11. ### movie_SD_vary_U12:
      Animation of ```colormap_SD``` for ```U12_range```.
- 18.   ### movie_SD_vary_DT:
+ 12. ### movie_SD_vary_DT:
       Animation of ```colormap_SD``` for ```DT_range```.
+ 13. ### movie_efficiency_vary_DT:
+     Animation of ```colormap_efficiency``` for ```DT_range```.
+
 
 ## Program usage
-The program can be run by typing in a linux shell: ```python3 main.py ```
+The program can be run by typing in a linux shell: ```python3 main.py ```.
+
+The ```inputs.py``` file contain the neccessary commented flags and inputs to set it up. 
 
 ## System requirements
 Python3 is required and the following Python packages:
@@ -62,4 +67,37 @@ Python3 is required and the following Python packages:
 - scipy
 - maplotlib
 - tqdm
-  
+- os
+
+
+## Examples
+
+
+(I, Q) and (Stability diagram) from ```movie_SD_vary_U12``` (it also generates the residues):
+
+https://github.com/Nahualcsc/EOM_DQD/assets/33580847/99e7f1e9-9618-43d9-85d3-764b4c62827a
+
+https://github.com/Nahualcsc/EOM_DQD/assets/33580847/24d2124a-f7e9-4d97-bb88-161c4884e55d
+
+
+
+
+(N, I, Q) and (n1,n2) from ```movie_currents_vary_U12```:
+
+
+https://github.com/Nahualcsc/EOM_DQD/assets/33580847/0482499e-1861-4852-bd57-134b0202e457
+
+
+https://github.com/Nahualcsc/EOM_DQD/assets/33580847/5f82cae8-daed-4dde-a3d7-873bccf824dd
+
+
+
+
+
+
+Spectral function from ```movie_spectral_function_vary_dv```:
+
+
+https://github.com/Nahualcsc/EOM_DQD/assets/33580847/7e8474ed-2d28-48da-a7b2-63b8c263478f
+
+
