@@ -83,48 +83,52 @@ def plot_calculate_spectral_function(list_file):
     fig.savefig('./Aw/A_v1_{}_v2_{}_V_{}_U1_{}_U2_{}_U12_{}_T_{}_g1_{}_g2_{}_delta_T_{}.png'.format(v1,v2,V,U1,U2,U12,T,gamma1,gamma2,delta_T), dpi=300)
 
 
+def create_movies_colormap_spectral_function(title):
+    os.system(f"ffmpeg -framerate 2 -pattern_type glob -i './movies/SF*.png' -c:v libx264 -pix_fmt yuv420p ./movies/SF_{title}.mp4")
+    os.system(f"rm ./movies/SF*.png")
 
 ###############################################
 ###############################################
 
 
 
-def plot_colormap_spectral_function(w_range, U12_range, A):
-    if not os.path.exists('Aw'): os.makedirs('Aw')
-    fig1, ax1 = plt.subplots(1, 1, figsize=(6,5)) 
-    c = ax1.pcolormesh(w_range, U12_range, A, shading='auto', cmap='inferno')
-    ax1.set_xlabel('$\\omega$')
-    ax1.set_ylabel('$U_{12}$')
-    fig1.colorbar(c, ax=ax1)
-    fig1.tight_layout()
-    fig1.savefig('./Aw/A_U1_{}_U2_{}_T_{}_g1_{}_g2_{}_V_{}_dT_{}.png'.format(U1, U2, T, gamma1, gamma2,V,delta_T), dpi=300)
+def plot_colormap_spectral_function(w_range, U12_range, A,title1,folder,output):
+    if not os.path.exists('folder'): os.makedirs('folder')
+    fig, ax = plt.subplots(1, 1, figsize=(6,5)) 
+    fig.suptitle(title1)
+    c = ax.pcolormesh(w_range, U12_range, A, shading='auto', cmap='inferno')
+    ax.set_xlabel('$\\omega$')
+    ax.set_ylabel('$U_{12}$')
+    fig.colorbar(c, ax=ax)
+    fig.tight_layout()
+    plt.savefig('./{}/SF_{}.png'.format(folder,output), dpi=300)
 
 
 
 ###############################################
 ###############################################
 
-def plot_colormaps_currents(v_range,V_range,dens_0,dens_1,I_EOM0,Q_EOM0):
+def plot_colormaps_currents(v_range,V_range,dens_0,dens_1,I_EOM0,Q_EOM0,title1,folder,output):
     if not os.path.exists('colormaps'): os.makedirs('colormaps')
     fontsize = 20 
-    fig, axs = plt.subplots(2, 1, figsize=(8, 16)) 
+    fig, axs = plt.subplots(1,2, figsize=(12, 6)) 
+    fig.suptitle(title1, fontsize=16)
     c0 = axs[0].imshow(dens_0, extent=[v_range.min(), v_range.max(), V_range.min(), V_range.max()], origin='lower', aspect='auto', cmap='inferno')
     c1 = axs[1].imshow(dens_1, extent=[v_range.min(), v_range.max(), V_range.min(), V_range.max()], origin='lower', aspect='auto', cmap='inferno')
-    fig.colorbar(c0, ax=axs[0], label='$n_1$').ax.tick_params(labelsize=fontsize)
-    fig.colorbar(c1, ax=axs[1], label='$n_2$').ax.tick_params(labelsize=fontsize)
-    axs[0].set_title('EOM 0', fontsize=16)
+    fig.colorbar(c0, ax=axs[0]).ax.tick_params(labelsize=fontsize)
+    fig.colorbar(c1, ax=axs[1]).ax.tick_params(labelsize=fontsize)
     axs[0].set_xlabel('$\\varepsilon$', fontsize=fontsize)
     axs[0].set_ylabel('V', fontsize=fontsize)
     axs[1].set_xlabel('$\\varepsilon$', fontsize=fontsize)
-    axs[1].set_ylabel('V', fontsize=fontsize)
-    axs[0].tick_params(axis='y', which='major', labelsize=fontsize)
+    axs[0].tick_params(axis='both', which='major', labelsize=fontsize)
     axs[1].tick_params(axis='both', which='major', labelsize=fontsize)
     axs[0].text(0.5, 0.05, '$n_1$', transform=axs[0].transAxes, ha='center', va='center', color='white', fontsize=fontsize)
     axs[1].text(0.5, 0.05, '$n_2$', transform=axs[1].transAxes, ha='center', va='center', color='white', fontsize=fontsize)
     fig.tight_layout(pad=1.0)
-    fig.savefig('./colormaps/ni_U1_{}_U2_{}_U12_{}_T_{}_g1_{}_g2_{}.png'.format(U1, U2, U12, T, gamma1, gamma2), dpi=300)
+    fig.savefig('./{}/ni_{}.png'.format(folder,output), dpi=300)
     
     fig, axs = plt.subplots(1, 3, figsize=(16, 5), sharey=True)
+    fig.suptitle(title1, fontsize=16 )
     c1 = axs[0].imshow(dens_0, extent=[v_range.min(), v_range.max(), V_range.min(), V_range.max()], origin='lower', aspect='auto', cmap='inferno')
     c2 = axs[1].imshow(I_EOM0, extent=[v_range.min(), v_range.max(), V_range.min(), V_range.max()], origin='lower', aspect='auto', cmap='inferno')
     c3 = axs[2].imshow(Q_EOM0, extent=[v_range.min(), v_range.max(), V_range.min(), V_range.max()], origin='lower', aspect='auto', cmap='inferno')
@@ -138,18 +142,28 @@ def plot_colormaps_currents(v_range,V_range,dens_0,dens_1,I_EOM0,Q_EOM0):
     axs[2].tick_params(axis='x', which='major', labelsize=fontsize)
     axs[0].set_ylabel('$V$', fontsize=fontsize)
     axs[0].text(0.5, 0.05, '$N$', transform=axs[0].transAxes, ha='center', va='center', color='white', fontsize=fontsize)
-    axs[1].text(0.5, 0.05, '$I/\\gamma$',colormap_residues_stability_diagram transform=axs[1].transAxes, ha='center', va='center', color='white', fontsize=fontsize)
+    axs[1].text(0.5, 0.05, '$I/\\gamma$', transform=axs[1].transAxes, ha='center', va='center', color='white', fontsize=fontsize)
     axs[2].text(0.5, 0.05, '$Q/\\gamma$', transform=axs[2].transAxes, ha='center', va='center', color='white', fontsize=fontsize)
     fig.subplots_adjust(wspace=0.15, hspace=0.3) 
     fig.tight_layout(pad=1.0)  
-    fig.savefig('./colormaps/n1IQ_U1_{}_U2_{}_U12_{}_T_{}_g1_{}_g2_{}.png'.format(U1, U2, U12, T, gamma1, gamma2), dpi=300)
+    fig.savefig('./{}/NIQ_{}.png'.format(folder,output), dpi=300)
+
+
+
+def create_movies_colormap_currents(title):
+    os.system(f"ffmpeg -framerate 2 -pattern_type glob -i './movies/NIQ*.png' -c:v libx264 -pix_fmt yuv420p ./movies/NIQ_{title}.mp4")
+    os.system(f"ffmpeg -framerate 2 -pattern_type glob -i './movies/ni*.png' -c:v libx264 -pix_fmt yuv420p ./movies/ni_{title}.mp4")
+    os.system(f"rm ./movies/ni*.png")
+    os.system(f"rm ./movies/NIQ*.png")
+
 
 ###############################################
 ###############################################
 
-def plot_colormap_efficiency(v_range,V_range,eficciency_norm_EOM0):
-    if not os.path.exists('colormaps'): os.makedirs('colormaps')
+def plot_colormap_efficiency(v_range,V_range,eficciency_norm_EOM0,DT,title1,folder,output):
+    if not os.path.exists('folder'): os.makedirs('folder')
     fig, axs = plt.subplots(1, 1, figsize=(6, 5), sharex=True) 
+    fig.suptitle(title1)
     c = axs.imshow(eficciency_norm_EOM0, extent=[v_range.min(), v_range.max(), V_range.min(), V_range.max()], origin='lower', aspect='auto', cmap='inferno')
     cb = fig.colorbar(c, ax=axs)
     cb.set_label(label='$\\eta/\\eta_C$', size=20)  
@@ -158,14 +172,20 @@ def plot_colormap_efficiency(v_range,V_range,eficciency_norm_EOM0):
     axs.set_ylabel('V', fontsize=20)  
     axs.tick_params(axis='both', which='major', labelsize=18) 
     plt.tight_layout()
-    plt.savefig('./colormaps/efficiency_U1_{}_U2_{}_U12_{}_T_{}_g1_{}_g2_{}.png'.format(U1, U2, U12, T, gamma1, gamma2), dpi=300)
+    fig.savefig('./{}/{}.png'.format(folder,output), dpi=300)
+
+
+def create_movies_colormap_efficiency(title):
+    os.system(f"ffmpeg -framerate 2 -pattern_type glob -i './movies/efficiency*.png' -c:v libx264 -pix_fmt yuv420p ./movies/efficiency_{title}.mp4")
+    os.system(f"rm ./movies/efficiency*.png")
 
 ###############################################
 ###############################################
 
-def plot_colormap_residues_stability_diagram(v1_range, v2_range, I_values, Q_values,Z, nsum):
-    if not os.path.exists('colormaps'): os.makedirs('colormaps')
-    fig, axs = plt.subplots(2, 3, figsize=(12, 8))  # Adjusted figure size
+def plot_colormap_SD(v1_range, v2_range, I_values, Q_values,Z, nsum,V,U12,delta_T,title1,folder,output):
+    if not os.path.exists(folder): os.makedirs(folder)
+    fig, axs = plt.subplots(2, 3, figsize=(12, 8)) 
+    fig.suptitle(title1)
     plt.subplots_adjust(left=0.1, right=0.92, bottom=0.1, top=0.95, wspace=0.05, hspace=0.05) 
     titles = ['$z_1$', '$z_2$', '$z_3$', '$z_4$', '$z_5$', '$z_6$']
     for i, (ax, z, title) in enumerate(zip(axs.flat, Z.transpose(2, 0, 1), titles)):
@@ -174,7 +194,6 @@ def plot_colormap_residues_stability_diagram(v1_range, v2_range, I_values, Q_val
         ax.set_title('')
         ax.set_xlabel('')
         ax.set_ylabel('')
-        ax.set_ylim(-5,1)
         ax.tick_params(axis='both', which='major', labelsize=20)
         if i >= 3:
             ax.set_xlabel('$\\varepsilon_1$', fontsize=20)
@@ -186,15 +205,15 @@ def plot_colormap_residues_stability_diagram(v1_range, v2_range, I_values, Q_val
             ax.set_yticklabels([])
     cbar_ax = fig.add_axes([0.93, 0.15, 0.02, 0.7])  # Position for the color bar
     fig.colorbar(c, cax=cbar_ax)
-    plt.savefig('./colormaps/residues_U1_{}_U2_{}_U12_{}_T_{}_g1_{}_g2_{}_V_{}_dT_{}.png'.format(U1, U2, U12, T, gamma1, gamma2,V,delta_T), dpi=300)
+    plt.savefig('./{}/residues_{}.png'.format(folder,output), dpi=300)
 
-    fig, axs = plt.subplots(1, 2, figsize=(6, 3 ))  # 1 row, 2 cols for I and Q
+    fig, axs = plt.subplots(1, 2, figsize=(6, 3 )) 
+    fig.suptitle(title1)
     plt.subplots_adjust(wspace=0.4)
     for ax, val, title, vmin, vmax in zip(axs, [I_values, Q_values], ['$I/\\gamma\\cdot 10^2$', '$Q/\\gamma\\cdot 10^2$'], [0,-40],[50,2]):
         c = ax.pcolormesh(v1_range, v2_range, val, shading='auto', cmap='inferno')#, vmin=vmin, vmax=vmax)
         ax.text(0.5, 0.9, title, transform=ax.transAxes, ha='center', va='center', color='white', fontsize=15)
         ax.set_xlabel('$\\varepsilon_1$')
-        ax.set_ylim(-5, 1)
         if title == '$I/\\gamma\\cdot 10^2$':
             ax.set_ylabel('$\\varepsilon_2$')
         else:
@@ -204,18 +223,26 @@ def plot_colormap_residues_stability_diagram(v1_range, v2_range, I_values, Q_val
         fig.colorbar(c, ax=ax)
     fig.subplots_adjust(wspace=0.1)  
     fig.tight_layout()
-    plt.savefig('./colormaps/IQ_U1_{}_U2_{}_U12_{}_T_{}_g1_{}_g2_{}_V_{}_dT_{}.png'.format(U1, U2, U12, T, gamma1, gamma2,V,delta_T), dpi=300)
+    plt.savefig('./{}/IQ_{}.png'.format(folder,output), dpi=300)
+    fig, ax = plt.subplots(1, 1, figsize=(6,5)) 
+    fig.suptitle(title1)
+    c = ax.pcolormesh(v1_range, v2_range, nsum, shading='auto', cmap='viridis', vmin=0, vmax=7)
+    ax.set_xlabel('$v_1$')
+    ax.set_ylabel('$v_2$')
+    fig.colorbar(c, ax=ax)
+    fig.tight_layout()
+    fig.savefig('./{}/SD_{}.png'.format(folder,output), dpi=300)
 
-    fig1, ax1 = plt.subplots(1, 1, figsize=(6,5)) 
-    c = ax1.pcolormesh(v1_range, v2_range, nsum, shading='auto', cmap='inferno', vmin=0, vmax=7)
-    ax1.set_xlabel('$v_1$')
-    ax1.set_ylabel('$v_2$')
-    ax1.set_ylim(-5, 1)
-    fig1.colorbar(c, ax=ax)
-    fig1.tight_layout()
-    fig1.savefig('./colormaps/SD_U1_{}_U2_{}_U12_{}_T_{}_g1_{}_g2_{}_V_{}_dT_{}.png'.format(U1, U2, U12, T, gamma1, gamma2,V,delta_T), dpi=300)
-
-
+def create_movies_colormap_SD(title):
+    os.system(f"ffmpeg -framerate 2 -pattern_type glob -i './movies/residues*.png' -c:v libx264 -pix_fmt yuv420p ./movies/residues_{title}.mp4")
+    os.system(f"ffmpeg -framerate 2 -pattern_type glob -i './movies/IQ*.png' -c:v libx264 -pix_fmt yuv420p ./movies/IQ_{title}.mp4")
+    os.system(f"ffmpeg -framerate 2 -pattern_type glob -i './movies/SD*.png' -c:v libx264 -pix_fmt yuv420p ./movies/SD_{title}.mp4")
+    os.system(f"rm ./movies/residues*.png")
+    os.system(f"rm ./movies/IQ*.png")
+    os.system(f"rm ./movies/SD*.png")
 ###############################################
 ###############################################
+
+
+
 
