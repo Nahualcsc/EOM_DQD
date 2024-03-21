@@ -9,7 +9,7 @@ The spectral function of the system $A=-\sum_{\alpha}\text{Im}\[G_\alpha(\omega)
 
 ## Parameters, Interactions, and calculation setup
 The parameters and interactions to be always set up in ```inputs.py``` are: ```T, delta_T, gamma, V, U1, U2, U12```. 
-There are currently six possible calculations implemented
+There are currently seven possible calculations implemented and another six animations related
 1. ### calculate_densities_vs_gate:
    The local occupations $n_\alpha$ are computed as a function of the external gate $\varepsilon=\frac{\varepsilon_1+\varepsilon_2}{2}$. The steady-state charge $I$ and heat $Q$ currents are also computed in a non-equilibrium setup. For finite thermal gradient $\Delta T$, the thermal efficiency $\eta/\eta_C$ (normalized over the Carnot efficiency) is also computed.
    
@@ -33,12 +33,25 @@ There are currently six possible calculations implemented
    
    Extra parameters to define: ```delta_v, v_range, V_range```.
    
-7. ### colormap_residues_stability_diagram:
+7. ### colormap_SD:
    The residues (numerators of the Green's function), the stability diagram ($n_1+5n_2$), and the steady-state charge $I$ and heat $Q$ currents as a function of the external gates $\varepsilon_1$ and  $\varepsilon_2$.
    
     Extra parameters to define: ```v1_range, v2_range```.
 
 For ```calculate_densities_vs_gate``` and ```calculate_spectral_function``` the calculation can be compared against the Hartree EOM (EOMH) result. To activate it: ```compute_EOMH= True```. Note that EOMH takes more time to evaluate.
+
+ 8. ### movie_spectral_function_vary_dv:
+    Animation of ```calculate_spectral_function```  for ```dv_range```.
+ 10. ### movie_spectral_function_vary_V:
+     Animation of ```calculate_spectral_function```  for ```dV_range```.
+ 12.  ### movie_currents_vary_U12:
+     Animation of ```colormaps_currents``` for ```U12_range```.
+ 14.  ### movie_SD_vary_V:
+     Animation of ```colormap_SD``` for ```V_range```.
+ 16.  ### movie_SD_vary_U12:
+     Animation of ```colormap_SD``` for ```U12_range```.
+ 18.   ### movie_SD_vary_DT:
+      Animation of ```colormap_SD``` for ```DT_range```.
 
 ## Program usage
 The program can be run by typing in a linux shell: ```python3 main.py ```
