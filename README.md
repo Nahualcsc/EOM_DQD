@@ -55,6 +55,19 @@ For ```calculate_densities_vs_gate``` and ```calculate_spectral_function``` the 
  13. ### movie_efficiency_vary_DT:
      Animation of ```colormap_efficiency``` for ```DT_range```.
 
+## Examples
+
+ 1. <img src="https://github.com/Nahualcsc/EOM_DQD/assets/33580847/99e7f1e9-9618-43d9-85d3-764b4c62827a" width="250" alt="(I, Q) from movie_SD_vary_U12">
+
+ 2. <img src="https://github.com/Nahualcsc/EOM_DQD/assets/33580847/24d2124a-f7e9-4d97-bb88-161c4884e55d" width="250" alt="Stability diagram from movie_SD_vary_U12">
+
+ 3. <img src="https://github.com/Nahualcsc/EOM_DQD/assets/33580847/0482499e-1861-4852-bd57-134b0202e457" width="250" alt=" (N,I,Q) from movie_currents_vary_U12">
+
+ 4. <img src="https://github.com/Nahualcsc/EOM_DQD/assets/33580847/5f82cae8-daed-4dde-a3d7-873bccf824dd" width="250" alt=" (n1,n2) from movie_currents_vary_U12">
+
+ 5. <img src="https://github.com/Nahualcsc/EOM_DQD/assets/33580847/4f0468f1-fda3-420a-a378-3e318067fb63" width="250" alt="Spectral function from movie_spectral_function_vary_dv">
+
+
 
 ## Program usage
 The program can be run by typing in a linux shell: ```python3 main.py ```.
@@ -70,34 +83,9 @@ Python3 is required and the following Python packages:
 - os
 
 
-## Examples
-
-
-(I, Q) and (Stability diagram) from ```movie_SD_vary_U12``` (it also generates the residues):
-
-https://github.com/Nahualcsc/EOM_DQD/assets/33580847/99e7f1e9-9618-43d9-85d3-764b4c62827a
-
-https://github.com/Nahualcsc/EOM_DQD/assets/33580847/24d2124a-f7e9-4d97-bb88-161c4884e55d
 
 
 
 
-(N, I, Q) and (n1,n2) from ```movie_currents_vary_U12```:
-
-
-https://github.com/Nahualcsc/EOM_DQD/assets/33580847/0482499e-1861-4852-bd57-134b0202e457
-
-
-https://github.com/Nahualcsc/EOM_DQD/assets/33580847/5f82cae8-daed-4dde-a3d7-873bccf824dd
-
-
-
-
-
-
-Spectral function from ```movie_spectral_function_vary_dv```:
-
-
-https://github.com/Nahualcsc/EOM_DQD/assets/33580847/7e8474ed-2d28-48da-a7b2-63b8c263478f
 
 
