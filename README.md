@@ -56,16 +56,21 @@ For ```calculate_densities_vs_gate``` and ```calculate_spectral_function``` the 
      Animation of ```colormap_efficiency``` for ```DT_range```.
 
 ## Examples
+ 1. $U_1=1,U_2=2,T=0.1,\gamma_1=\gamma_2=10^{-3},V=0,\Delta T=10^{-2}$ and $U_{12}\in (0,3)$:
+  <img src="https://github.com/Nahualcsc/EOM_DQD/assets/33580847/99e7f1e9-9618-43d9-85d3-764b4c62827a" width="250" alt="(I, Q) from movie_SD_vary_U12">
 
- 1. <img src="https://github.com/Nahualcsc/EOM_DQD/assets/33580847/99e7f1e9-9618-43d9-85d3-764b4c62827a" width="250" alt="(I, Q) from movie_SD_vary_U12">
+2. $U_1=1,U_2=2,T=0.1,\gamma_1=\gamma_2=10^{-3},V=0,\Delta T=10^{-2}$ and $U_{12}\in (0,3)$:
+  <img src="https://github.com/Nahualcsc/EOM_DQD/assets/33580847/24d2124a-f7e9-4d97-bb88-161c4884e55d" width="250" alt="Stability diagram from movie_SD_vary_U12">
 
- 2. <img src="https://github.com/Nahualcsc/EOM_DQD/assets/33580847/24d2124a-f7e9-4d97-bb88-161c4884e55d" width="250" alt="Stability diagram from movie_SD_vary_U12">
+3. $U_1=2,U_2=3,T=0.1,\gamma_1=\gamma_2=10^{-1},\delta v=0,\Delta T=10^{-1}$ and $U_{12}\in (0,3)$:
+  <img src="https://github.com/Nahualcsc/EOM_DQD/assets/33580847/0482499e-1861-4852-bd57-134b0202e457" width="250" alt=" (N,I,Q) from movie_currents_vary_U12">
 
- 3. <img src="https://github.com/Nahualcsc/EOM_DQD/assets/33580847/0482499e-1861-4852-bd57-134b0202e457" width="250" alt=" (N,I,Q) from movie_currents_vary_U12">
+  
+4. $U_1=2,U_2=3,T=0.1,\gamma_1=\gamma_2=10^{-1},\delta v=0,\Delta T=10^{-1}$ and $U_{12}\in (0,3)$:
+   <img src="https://github.com/Nahualcsc/EOM_DQD/assets/33580847/5f82cae8-daed-4dde-a3d7-873bccf824dd" width="250" alt=" (n1,n2) from movie_currents_vary_U12">
 
- 4. <img src="https://github.com/Nahualcsc/EOM_DQD/assets/33580847/5f82cae8-daed-4dde-a3d7-873bccf824dd" width="250" alt=" (n1,n2) from movie_currents_vary_U12">
-
- 5. <img src="https://github.com/Nahualcsc/EOM_DQD/assets/33580847/4f0468f1-fda3-420a-a378-3e318067fb63" width="250" alt="Spectral function from movie_spectral_function_vary_dv">
+5. $U_1=2,U_2=3,T=0.1,\gamma_1=\gamma_2=10^{-1},\delta v=0,\Delta T=0$ and $\delta v\in (0,2)$:
+    <img src="https://github.com/Nahualcsc/EOM_DQD/assets/33580847/4f0468f1-fda3-420a-a378-3e318067fb63" width="250" alt="Spectral function from movie_spectral_function_vary_dv">
 
 
 
