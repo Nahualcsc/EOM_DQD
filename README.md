@@ -68,7 +68,7 @@ For ```calculate_densities_vs_gate``` and ```calculate_spectral_function``` the 
 4. $U_1=2,U_2=3,T=0.1,\gamma_1=\gamma_2=10^{-1},\delta v=0,\Delta T=0$ and $U_{12}\in (0,3)$:
   <img src="https://github.com/Nahualcsc/EOM_DQD/assets/33580847/5f82cae8-daed-4dde-a3d7-873bccf824dd" width="250" alt=" (n1,n2) from movie_currents_vary_U12">
 
-5. $U_1=2,U_2=3,T=0.1,\gamma_1=\gamma_2=0,\delta v=0,\Delta T=0$ and $\delta v\in (0,2)$:
+5. $U_1=2,U_2=3,T=0.1,\gamma_1=\gamma_2=0,\delta v=0,\Delta T=0, v_i = -U_1/2-U_{12}\pm\delta_v/2$ and $\delta v\in (0,2)$:
   <img src="https://github.com/Nahualcsc/EOM_DQD/assets/33580847/4f0468f1-fda3-420a-a378-3e318067fb63" width="250" alt="Spectral function from movie_spectral_function_vary_dv">
 
 
