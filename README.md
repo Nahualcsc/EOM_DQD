@@ -1,5 +1,5 @@
 # EOM_DQD
-Equation of Motion Approach for a parallel double quantum dot system symmetrically attached to two non-interacting electron reservoirs.  The Hamiltonian of the system has the form
+Equation of Motion Approach for a parallel double quantum dot system symmetrically attached to two non-interacting electronic reservoirs.  The Hamiltonian of the system has the form
 
 ![image](https://github.com/Nahualcsc/EOM_DQD/assets/33580847/eda646d0-275a-4a1f-b317-a07837aed386)
 
