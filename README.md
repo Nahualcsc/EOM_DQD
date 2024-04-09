@@ -21,8 +21,10 @@ There are currently six possible calculations implemented and another seven anim
 3. ### calculate_transport_coeffs:
    The electrical conductance, electronic contribution to the thermal conductance, the Seebeck coefficient and the figure of merit are computed as a function of the external gate $\varepsilon$ .
 
-For ```calculate_densities_vs_gate```, ```calculate_spectral_function``` and ```calculate_transport_coeffs``` , the calculation can be compared against the Hartree EOM (EOMH) result. To activate it: ```compute_EOMH= True```. Note that EOMH takes more time to evaluate. For these calculations, the data can be stored in a txt file: ```save_data= True```
     Extra parameters to define: ```v_range, delta_v```.
+
+For ```calculate_densities_vs_gate```, ```calculate_spectral_function``` and ```calculate_transport_coeffs``` , the calculation can be compared against the Hartree EOM (EOMH) result. To activate it: ```compute_EOMH= True```. Note that EOMH takes more time to evaluate. For these calculations, the data can be stored in a txt file: ```save_data= True```
+    
 
 4. ### colormap_spectral_function:
    The total spectral function $A=-\sum_{\alpha}\text{Im}\[G_\alpha(\omega)\]/\pi$ is calculated as a function of the inter-Coulomb interaction $U_{12}$ and  frequency $\omega$.
