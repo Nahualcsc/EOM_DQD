@@ -37,8 +37,12 @@ There are currently six possible calculations implemented and another seven anim
    The residues (numerators of the Green's function), the stability diagram ($n_1+5n_2$), and the steady-state charge $I$ and heat $Q$ currents as a function of the external gates $\varepsilon_1$ and  $\varepsilon_2$.
    
     Extra parameters to define: ```v1_range, v2_range```.
+7. ### calculate_transport_coeffs:
+   The electrical conductance, electronic contribution to the thermal conductance, the Seebeck coefficient and the figure of merit are computed as a function of the external gate $\varepsilon$ .
+   
+    Extra parameters to define: ```v_range, delta_v```.
 
-For ```calculate_densities_vs_gate``` and ```calculate_spectral_function``` the calculation can be compared against the Hartree EOM (EOMH) result. To activate it: ```compute_EOMH= True```. Note that EOMH takes more time to evaluate.
+For ```calculate_densities_vs_gate```, ```calculate_spectral_function``` and ```calculate_transport_coeffs``` , the calculation can be compared against the Hartree EOM (EOMH) result. To activate it: ```compute_EOMH= True```. Note that EOMH takes more time to evaluate. For these calculations, the data can be stored in a txt file: ```save_data= True```
 
  7. ### movie_spectral_function_vary_dv:
     Animation of ```calculate_spectral_function```  for ```dv_range```.
