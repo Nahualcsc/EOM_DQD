@@ -44,19 +44,19 @@ There are currently six possible calculations implemented and another seven anim
 
 For ```calculate_densities_vs_gate```, ```calculate_spectral_function``` and ```calculate_transport_coeffs``` , the calculation can be compared against the Hartree EOM (EOMH) result. To activate it: ```compute_EOMH= True```. Note that EOMH takes more time to evaluate. For these calculations, the data can be stored in a txt file: ```save_data= True```
 
- 7. ### movie_spectral_function_vary_dv:
+ 8. ### movie_spectral_function_vary_dv:
     Animation of ```calculate_spectral_function```  for ```dv_range```.
- 8. ### movie_spectral_function_vary_V:
+ 9. ### movie_spectral_function_vary_V:
      Animation of ```calculate_spectral_function```  for ```dV_range```.
- 9. ### movie_currents_vary_U12:
+ 10. ### movie_currents_vary_U12:
      Animation of ```colormaps_currents``` for ```U12_range```.
- 9. ### movie_SD_vary_V:
+ 11. ### movie_SD_vary_V:
      Animation of ```colormap_SD``` for ```V_range```.
- 11. ### movie_SD_vary_U12:
+ 12. ### movie_SD_vary_U12:
      Animation of ```colormap_SD``` for ```U12_range```.
- 12. ### movie_SD_vary_DT:
+ 13. ### movie_SD_vary_DT:
       Animation of ```colormap_SD``` for ```DT_range```.
- 13. ### movie_efficiency_vary_DT:
+ 14. ### movie_efficiency_vary_DT:
      Animation of ```colormap_efficiency``` for ```DT_range```.
 
 ## Examples
