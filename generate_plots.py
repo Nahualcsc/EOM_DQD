@@ -11,7 +11,7 @@ import os
 #######################################################
 #######################################################
 
-def  plot_calculate_densities(list_file):
+def  plot_calculate_densities(list_file, output):
     if not os.path.exists('ni'): os.makedirs('ni')
     if not os.path.exists('Currents'): os.makedirs('Currents')
     if not os.path.exists('Efficiency'): os.makedirs('Efficiency')
@@ -21,8 +21,15 @@ def  plot_calculate_densities(list_file):
         efficiency_EOMH, output_power_EOMH,efficiency_EOM0, output_power_EOM0 = zip(*list_file)
         axs[0].plot(veq,n1EOMH, '--', color='red',label = 'EOM H',linewidth=1.5)
         axs[1].plot(veq,n2EOMH, '-', color='red',label = 'EOM H',linewidth=1.5)
+        if save_data:
+            data = np.column_stack((veq,n1GCE,n2GCE,n1EOMH,n2EOMH,n1EOM0,n2EOM0,I_EOMH,I_EOM0,Q_EOMH,Q_EOM0,\
+            efficiency_EOMH, output_power_EOMH,efficiency_EOM0, output_power_EOM0))
+            np.savetxt('densities_{}.txt'.format(output), data, delimiter=' ', header='## veq,n1GCE,n2GCE,n1EOMH,n2EOMH,n1EOM0,n2EOM0,I_EOMH,I_EOM0,Q_EOMH,Q_EOM0, efficiency_EOMH, output_power_EOMH,efficiency_EOM0, output_power_EOM0', comments='')
     else:    
         veq,n1GCE,n2GCE,n1EOM0,n2EOM0,I_EOM0,Q_EOM0,efficiency_EOM0, output_power_EOM0 = zip(*list_file)
+        if save_data:
+            data = np.column_stack((veq,n1GCE,n2GCE,n1EOM0,n2EOM0,I_EOM0,Q_EOM0,efficiency_EOM0, output_power_EOM0))
+            np.savetxt('densities_{}.txt'.format(output), data, delimiter=' ', header='## v,n1GCE,n2GCE,n1EOM0,n2EOM0,I_EOM0,Q_EOM0,efficiency_EOM0, output_power_EOM0', comments='')
     axs[0].plot(veq,n1GCE, '-', color='green',label = 'GCE',linewidth=1.5)
     axs[0].plot(veq,n1EOM0, '--', color='blue',label = 'EOM 0',linewidth=1.5)
     axs[1].plot(veq,n2GCE, '-', color='green',label = 'GCE',linewidth=1.5)
@@ -38,7 +45,7 @@ def  plot_calculate_densities(list_file):
     if V!=0. or delta_T!=0.:
         fig2, axs2 = plt.subplots(2, 1, figsize=(8, 12), sharex=True)
         if compute_EOMH:    
-            axs2[0].plot(veq,I_EOMH, '-', color='red',label = 'EOM H',linewidth=1.5)
+            axs2[0].plot(veq,I_EOMH, '-', color='red',label = 'EOM approx G',linewidth=1.5)
             axs2[1].plot(veq,Q_EOMH, '-', color='red',label = 'EOM H',linewidth=1.5)
         axs2[0].plot(veq,I_EOM0, '--', color='blue',label = 'EOM 0',linewidth=1.5)       
         axs2[1].plot(veq,Q_EOM0, '--', color='blue',label = 'EOM 0',linewidth=1.5)    
@@ -68,14 +75,28 @@ def  plot_calculate_densities(list_file):
 ###############################################
 
 
-def plot_calculate_spectral_function(list_file):
+def plot_calculate_spectral_function(list_file,output):
     if not os.path.exists('Aw'): os.makedirs('Aw')
     fig, axs = plt.subplots(1, 1, figsize=(6, 5), sharex=True)
     if compute_EOMH:
-        w,A0,AH= zip(*list_file)
-        axs.plot(w,AH, '-', color='blue',label = 'EOM H',linewidth=1.5)
-    else: w,A0= zip(*list_file)
-    axs.plot(w,A0, '-', color='red',label = 'EOM 0',linewidth=1.5)
+        w, A01, A02,A0, AH_1, AH_2, AH= zip(*list_file)
+        axs.plot(w,[AHa/2 for AHa in AH], '-', color='gray',label = 'A/2 EOM H',linewidth=1.5)
+        if save_data:
+            data = np.column_stack((w, A01, A02,A0, AH_1, AH_2, AH))
+            np.savetxt('Aw/A_{}.txt'.format(output), data, delimiter=' ', header='## w, A1 EOM0, A2 EOM0, A1+A2 EOM0, A1 H, A2 H, A1+A2 H', comments='')
+    else: 
+        w, A01, A02,A0= zip(*list_file)
+        if save_data:
+            data = np.column_stack((w, A01, A02,A0))
+            np.savetxt('Aw/A_{}.txt'.format(output), data, delimiter=' ', header='## w, A1 EOM0, A2 EOM0, A1+A2 EOM0', comments='')
+    fig.suptitle('$U1$ = {}, $U2$ = {}, $U12$ = {}, $T$ = {}, $\\gamma$ = {}'.format(U1,U2,U12,T,gamma1))
+    axs.plot(w,A0, '-', color='orange',label = 'A EOM 0',linewidth=1.5)
+    axs.plot(w,A01, '--', color='blue',label = '$A_1$',linewidth=1.)
+    axs.plot(w,A02, '--', color='red',label = '$A_2$',linewidth=1.)
+    data_NCA = np.loadtxt('A_NCA_g=0.05.txt', delimiter=' ')
+    w_NCA = data_NCA[:, 0]  # Assuming the first column is the x-axis data
+    A_NCA = data_NCA[:, 1]  # Assuming the second column is the y-axis data
+    axs.plot(w_NCA, A_NCA, '--', color='black', label='NCA', linewidth=1.5)
     axs.set_ylabel('$A(\\omega)$', fontsize=16)
     axs.set_xlabel('$\\omega$', fontsize=16)
     fig.tight_layout()
@@ -189,7 +210,8 @@ def plot_colormap_SD(v1_range, v2_range, I_values, Q_values,Z, nsum,V,U12,delta_
     plt.subplots_adjust(left=0.1, right=0.92, bottom=0.1, top=0.95, wspace=0.05, hspace=0.05) 
     titles = ['$z_1$', '$z_2$', '$z_3$', '$z_4$', '$z_5$', '$z_6$']
     for i, (ax, z, title) in enumerate(zip(axs.flat, Z.transpose(2, 0, 1), titles)):
-        c = ax.pcolormesh(v1_range, v2_range, z, shading='auto', cmap='inferno', vmin=0, vmax=1)
+        c = ax.pcolormesh(v1_range, v2_range, z, shading='auto', cmap='inferno', vmin=-1, vmax=1)
+        ax.plot([v1_range[0], v1_range[-1]], [v2_range[0], v2_range[-1]], color='white', linestyle='--', linewidth=1)
         ax.text(0.5, 0.9, title, transform=ax.transAxes, ha='center', va='center', color='white', fontsize=20)
         ax.set_title('')
         ax.set_xlabel('')
@@ -244,5 +266,59 @@ def create_movies_colormap_SD(title):
 ###############################################
 
 
+def plot_calculate_transport_coeffs(list_file,output):
+    if not os.path.exists('transport_coeffs'): os.makedirs('transport_coeffs')
+    fig, axs = plt.subplots(2, 2, figsize=(8, 8), sharex=True)
+    if compute_EOMH:
+        veq,G,S,kappa,ZT,G_H,S_H,kappa_H,ZT_H= zip(*list_file)
+        if save_data:
+            data = np.column_stack((veq,G,S,kappa,ZT,G_H,S_H,kappa_H,ZT_H))
+            np.savetxt('transport_coeffs/transport_coeffs_{}.txt'.format(output), data, delimiter=' ', header='## v,G,S,kappa,ZT,G_H,S_H,kappa_H,ZT_H', comments='')
+        axs[0,0].plot(veq,G_H, '-', color='red',label = 'EOM Hartree',linewidth=1.5)
+        axs[1,0].plot(veq,S_H, '-', color='red',linewidth=1.5)
+        axs[0,1].plot(veq,kappa_H, '-', color='red',linewidth=1.5)
+        axs[1,1].plot(veq,ZT_H, '-', color='red',linewidth=1.5)
 
+    else:
+        veq,G,S,kappa,ZT = zip(*list_file)
+        if save_data:
+            data = np.column_stack((veq,G,S,kappa,ZT ))
+            np.savetxt('transport_coeffs/transport_coeffs_{}.txt'.format(output), data, delimiter=' ', header='## v,G,S,kappa,ZT ', comments='')
+    axs[0,0].plot(veq,G, '--', color='black',label = 'EOM 0',linewidth=1.5)
+    axs[1,0].plot(veq,S, '--', color='black',label = '',linewidth=1.5)
+    axs[0,1].plot(veq,kappa, '--', color='black',label = '',linewidth=1.5)
+    axs[1,1].plot(veq,ZT, '--', color='black',label = '',linewidth=1.5)
+    axs[0,0].set_ylabel('$G/G_0$', fontsize=16)
+    axs[1,0].set_ylabel('$S$', fontsize=16)
+    axs[0,1].set_ylabel('$\\kappa/G_0$', fontsize=16)
+    axs[1,1].set_ylabel('ZT', fontsize=16)
+    axs[1,0].set_xlabel('$v$', fontsize=16)
+    axs[1,1].set_xlabel('$v$', fontsize=16)
+    fig.suptitle('$U1$ = {}, $U2$ = {}, $U12$ = {}, $T$ = {}, $\\gamma_1$ = {}, $\\gamma_2$ = {}, $\\delta v$ = {}'.format(U1,U2,U12,T,gamma1,gamma2,delta_v))
+    fig.tight_layout()
+    axs[0,0].legend(loc='upper left')
+    fig.savefig('./transport_coeffs/GSk_V_{}_U1_{}_U2_{}_U12_{}_T_{}_g1_{}_g2_{}_dv_{}.png'.format(V,U1,U2,U12,T,gamma1,gamma2,delta_v), dpi=300)
+
+
+
+
+def plot_colormap_vHxci(n1_values, n2_values, vHxc1,vHxc2,title1,folder,output):
+    if not os.path.exists(folder): os.makedirs(folder)
+    fontsize = 20 
+    fig, axs = plt.subplots(1,2, figsize=(12, 6)) 
+    fig.suptitle(title1, fontsize=16)
+    c0 = axs[0].imshow(vHxc1, extent=[n1_values.min(), n1_values.max(), n2_values.min(), n2_values.max()], origin='lower', aspect='auto', cmap='inferno', vmin=0, vmax=5)
+    c1 = axs[1].imshow(vHxc2, extent=[n1_values.min(), n1_values.max(), n2_values.min(), n2_values.max()], origin='lower', aspect='auto', cmap='inferno', vmin=0, vmax=5)
+    fig.colorbar(c0, ax=axs[0]).ax.tick_params(labelsize=fontsize)
+    fig.colorbar(c1, ax=axs[1]).ax.tick_params(labelsize=fontsize)
+    axs[0].set_xlabel('$n_1$', fontsize=fontsize)
+    axs[0].set_ylabel('$n_2$', fontsize=fontsize)
+    axs[1].set_xlabel('$n_1$', fontsize=fontsize)
+    axs[0].tick_params(axis='both', which='major', labelsize=fontsize)
+    axs[1].tick_params(axis='both', which='major', labelsize=fontsize)
+    axs[0].text(0.5, 0.05, '$v_{Hxc,1}$', transform=axs[0].transAxes, ha='center', va='center', color='white', fontsize=fontsize)
+    axs[1].text(0.5, 0.05, '$v_{Hxc,2}$', transform=axs[1].transAxes, ha='center', va='center', color='white', fontsize=fontsize)
+    fig.tight_layout(pad=1.0)
+    fig.savefig('./{}/vHxci_{}.png'.format(folder,output), dpi=300)
+    
 
