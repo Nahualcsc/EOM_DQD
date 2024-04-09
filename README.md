@@ -18,32 +18,31 @@ There are currently six possible calculations implemented and another seven anim
    The total spectral function $A=-\sum_{\alpha}\text{Im}\[G_\alpha(\omega)\]/\pi$ is calculated as a function of the frequency $\omega$.
    
    Extra parameters to define: ```w_range, v1, v2```.
-3. ### colormap_spectral_function:
+3. ### calculate_transport_coeffs:
+   The electrical conductance, electronic contribution to the thermal conductance, the Seebeck coefficient and the figure of merit are computed as a function of the external gate $\varepsilon$ .
+
+For ```calculate_densities_vs_gate```, ```calculate_spectral_function``` and ```calculate_transport_coeffs``` , the calculation can be compared against the Hartree EOM (EOMH) result. To activate it: ```compute_EOMH= True```. Note that EOMH takes more time to evaluate. For these calculations, the data can be stored in a txt file: ```save_data= True```
+    Extra parameters to define: ```v_range, delta_v```.
+
+4. ### colormap_spectral_function:
    The total spectral function $A=-\sum_{\alpha}\text{Im}\[G_\alpha(\omega)\]/\pi$ is calculated as a function of the inter-Coulomb interaction $U_{12}$ and  frequency $\omega$.
    
    Extra parameters to define: ```w_range, U12_range```.
    
    Implemented at the particle-hole symmetry point $\varepsilon_\alpha=-U_\alpha/2-U_{12}$, to set other gate levels go to line 80 of main.py
-4. ### colormaps_currents:
+5. ### colormaps_currents:
    The local occupations, as well as the steady-state charge $I$ and heat $Q$ currents, are computed as a function of the external gate $\varepsilon=\frac{\varepsilon_1+\varepsilon_2}{2}$ and the bias voltage $V$.
    
    Extra parameters to define: ```delta_v, v_range, V_range```.
-5. ### colormap_efficiency:
+6. ### colormap_efficiency:
    The thermal efficiency  $\eta/\eta_C$ is computed as a function of the $\varepsilon=\frac{\varepsilon_1+\varepsilon_2}{2}$ and the bias voltage $V$.
    
    Extra parameters to define: ```delta_v, v_range, V_range```.
    
-6. ### colormap_SD:
+7. ### colormap_SD:
    The residues (numerators of the Green's function), the stability diagram ($n_1+5n_2$), and the steady-state charge $I$ and heat $Q$ currents as a function of the external gates $\varepsilon_1$ and  $\varepsilon_2$.
    
     Extra parameters to define: ```v1_range, v2_range```.
-7. ### calculate_transport_coeffs:
-   The electrical conductance, electronic contribution to the thermal conductance, the Seebeck coefficient and the figure of merit are computed as a function of the external gate $\varepsilon$ .
-   
-    Extra parameters to define: ```v_range, delta_v```.
-
-For ```calculate_densities_vs_gate```, ```calculate_spectral_function``` and ```calculate_transport_coeffs``` , the calculation can be compared against the Hartree EOM (EOMH) result. To activate it: ```compute_EOMH= True```. Note that EOMH takes more time to evaluate. For these calculations, the data can be stored in a txt file: ```save_data= True```
-
  8. ### movie_spectral_function_vary_dv:
     Animation of ```calculate_spectral_function```  for ```dv_range```.
  9. ### movie_spectral_function_vary_V:
