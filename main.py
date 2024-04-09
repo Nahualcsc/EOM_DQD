@@ -101,7 +101,7 @@ def compute_Aw(w_range,U12_range,V,delta_v):
 
 if colormap_spectral_function:
     output = 'U1_{}_U2_{}_T_{}_g1_{}_g2_{}_dT_{}'.format(U1, U2, T, gamma1, gamma2,delta_T)
-    A = compute_Aw(w_range,U12_range,V,delta_v)
+    A = compute_Aw(w_range,U12_range,V,delta_v=0)
     plot_colormap_spectral_function(w_range, U12_range, A,'','Aw',output)
 
 
