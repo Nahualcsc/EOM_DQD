@@ -24,6 +24,8 @@ list_file = []
 
 if calculate_densities_vs_gate:
     imp = GCE_Impurity(U1,U2,U12)
+    dens_EOMH = [1.,1.]
+    output = 'U1_{}_U2_{}_U12_{}_T_{}_g_{}'.format(U1, U2, U12, T, gamma)
     for veq in tqdm(v_range):
         imp.set_gate( veq+delta_v/2,veq-delta_v/2)
         dens_GCE = imp.comp_dens(beta)
@@ -32,14 +34,17 @@ if calculate_densities_vs_gate:
         if delta_T!=0.:efficiency_EOM0, output_power_EOM0 = EOM.efficiency(I_EOM0,Q_EOM0)
         else: efficiency_EOM0, output_power_EOM0 = 0.,0.
         if compute_EOMH:
-            dens_EOMH = optimize.root( EOM.solve_H, [0.5*dens_GCE[0],0.5*dens_GCE[1]], method='hybr', tol=1.e-12).x
+            #dens_EOMH = optimize.root( EOM.solve_H, [0.5*dens_GCE[0],0.5*dens_GCE[1]], method='hybr').x
+            dens_EOMH = optimize.root( EOM.solve_H, [dens_EOMH[0],dens_EOMH[1]], method='hybr').x
+            ##dens_EOMH = optimize.root( EOM.dens_approx_G, [EOM.n1,EOM.n2], method='hybr', options={'maxiter': 500, 'fatol': 1e-12}).x
+            ##dens_EOMH = optimize.root( EOM.Solve_coupled_system, [EOM.n1,EOM.n2,0,0,0,0,0,0,0], method='hybr').x
             I_EOMH,Q_EOMH = EOM.Current_EOMH(dens_EOMH[0],dens_EOMH[1])
             if delta_T!=0.:efficiency_EOMH, output_power_EOMH = EOM.efficiency(I_EOMH,Q_EOMH)
             else: efficiency_EOMH, output_power_EOMH,c_eff_EOMH = 0.,0.,0.
             list_file.append((veq,dens_GCE[0],dens_GCE[1],2*dens_EOMH[0],2*dens_EOMH[1],2*EOM.n1,2*EOM.n2,\
                 I_EOMH,I_EOM0,Q_EOMH,Q_EOM0,efficiency_EOMH, output_power_EOMH,efficiency_EOM0, output_power_EOM0))
         else: list_file.append((veq,dens_GCE[0],dens_GCE[1],2*EOM.n1,2*EOM.n2, I_EOM0,Q_EOM0,efficiency_EOM0, output_power_EOM0))
-    plot_calculate_densities(list_file)
+    plot_calculate_densities(list_file,output)
     
 
 ###############################################
@@ -49,6 +54,7 @@ if calculate_spectral_function:
     EOM = Equations_of_motion(v1,v2,V,T+0.5*delta_T,T-0.5*delta_T,U1,U2,U12,gamma1,gamma2)
     n1 = EOM.n1
     n2 = EOM.n2
+    output = 'U1_{}_U2_{}_U12_{}_T_{}_g_{}'.format(U1, U2, U12, T, gamma)
     if compute_EOMH:
         dens_EOMH = optimize.root( EOM.solve_H, [0.5,0.5], method='hybr').x
     for w in w_range: 
@@ -59,27 +65,33 @@ if calculate_spectral_function:
             AH_1 = EOM.Ai_Hartree(w, v1, U1, gamma1,dens_EOMH[0],dens_EOMH[1])
             AH_2 = EOM.Ai_Hartree(w, v2, U2, gamma2,dens_EOMH[1],dens_EOMH[0])
             AH = (AH_1+AH_2)
-            list_file.append((w,A0,AH))
-        else: list_file.append((w,A0))
+            #G01 = EOM.G0( w,v1, v2, U1, U2, gamma1, gamma2,EOM.n1,EOM.n2, 0.001j).real
+            #G02 = EOM.G0( w,v2, v1, U2, U1, gamma2, gamma1,EOM.n2,EOM.n1, 0.001j).real
+            #AH = -2/(np.pi)*(((G01)/(1+G01*2j*gamma)).imag +((G02)/(1+G02*2j*gamma)).imag)
+            list_file.append((w,A_1,A_2,A0,AH_1,AH_2,AH))
+        else: list_file.append((w,A_1,A_2,A0))
     norma_A1_O, err = integrate.quad(EOM.Ai, -np.infty, np.infty,  args =(v1,v2, U1,U2, gamma1,gamma2,EOM.n1,EOM.n2))
     if compute_EOMH:
         norma_A1_H, err = integrate.quad(EOM.Ai_Hartree, -np.infty, np.infty,  args =(v1, U1, gamma1,dens_EOMH[0],dens_EOMH[1]))
         print('|A1|_H = {}, |A1|_0 = {}'.format(norma_A1_H,norma_A1_O))
     else: print('|A1|_0 = {}'.format(norma_A1_O))
-    plot_calculate_spectral_function(list_file)
+    plot_calculate_spectral_function(list_file,output)
 
 
 
 ###############################################
 ###############################################
 
-def compute_Aw(w_range,U12_range,V,v1,v2):
+def compute_Aw(w_range,U12_range,V,delta_v):
     A = np.zeros((len(U12_range), len(w_range)))
     output = 'U1_{}_U2_{}_V_{}_T_{}_g1_{}_g2_{}_dT_{}'.format(U1, U2, V, T, gamma1, gamma2,delta_T)
     for i, U12 in enumerate(U12_range):
-        if colormap_spectral_function:
+        if colormap_spectral_function or movie_spectral_function_vary_V:
             v1 = -0.5*U1-U12
             v2 = -0.5*U2-U12
+        elif movie_spectral_function_vary_dv:
+            v1 = -0.5*U1-U12+0.5*delta_v
+            v2 = -0.5*U2-U12-0.5*delta_v
         for j, w in enumerate(w_range):
             EOM = Equations_of_motion(v1,v2,V,T+0.5*delta_T,T-0.5*delta_T,U1,U2,U12,gamma1,gamma2)
             A_1 = EOM.Ai(w,v1, v2, U1, U2, gamma1, gamma2,EOM.n1,EOM.n2)
@@ -89,7 +101,7 @@ def compute_Aw(w_range,U12_range,V,v1,v2):
 
 if colormap_spectral_function:
     output = 'U1_{}_U2_{}_T_{}_g1_{}_g2_{}_dT_{}'.format(U1, U2, T, gamma1, gamma2,delta_T)
-    A = compute_Aw(w_range,U12_range,V,0.,0.)
+    A = compute_Aw(w_range,U12_range,V,delta_v)
     plot_colormap_spectral_function(w_range, U12_range, A,'','Aw',output)
 
 
@@ -97,7 +109,7 @@ if movie_spectral_function_vary_V:
     folder = 'movies'
     output = 'U1_{}_U2_{}_dV_{}_T_{}_g1_{}_g2_{}_dT_{}_V_{}_to_{}'.format(U1, U2, delta_v, T, gamma1, gamma2,delta_T,V_range[0],V_range[-1])
     for V in tqdm(V_range):
-        A = compute_Aw(w_range,U12_range,V,v1,v2)
+        A = compute_Aw(w_range,U12_range,V,delta_v)
         title = '$V$ = '+str(round(V,4))
         plot_colormap_spectral_function(w_range, U12_range, A, title,folder,str(V))
     create_movies_colormap_spectral_function(output)
@@ -106,9 +118,9 @@ if movie_spectral_function_vary_dv:
     folder = 'movies'
     output = 'U1_{}_U2_{}_V_{}_T_{}_g1_{}_g2_{}_dT_{}_dv_{}_to_{}'.format(U1, U2, V, T, gamma1, gamma2,delta_T,dv_range[0],dv_range[-1])
     for delta_v in tqdm(dv_range):
-        v1 = v+0.5*delta_v
-        v2 = v -0.5*delta_v
-        A = compute_Aw(w_range,U12_range,V,v1,v2)
+        #v1 = v+0.5*delta_v
+        #v2 = v -0.5*delta_v
+        A = compute_Aw(w_range,U12_range,V,delta_v)
         title = '$\\delta v$ = '+str(round(delta_v,4))
         plot_colormap_spectral_function(w_range, U12_range, A, title,folder,str(delta_v))
     create_movies_colormap_spectral_function(output)
@@ -181,15 +193,20 @@ if movie_efficiency_vary_DT:
 ###############################################
 
 def compute_SD(v1_range,v2_range,V,U12,delta_T):
+    A = np.zeros((len(v1_range), len(v2_range), 6))  # For z1 to z6
+    B = np.zeros((len(v1_range), len(v2_range), 6))  # For z1 to z6
     Z = np.zeros((len(v1_range), len(v2_range), 6))  # For z1 to z6
     I_values = np.zeros((len(v1_range), len(v2_range)))
     Q_values = np.zeros((len(v1_range), len(v2_range)))
     nsum = np.zeros((len(v1_range), len(v2_range)))
     for i, v1 in enumerate(v1_range):
         for j, v2 in enumerate(v2_range):
-            EOM = Equations_of_motion(v1, v2, V, T + 0.5*delta_T, T -0.5*delta_T, U1, U2, U12, gamma1, gamma2)
+            EOM = Equations_of_motion(v1, v2, V, T + 0.5*delta_T, T -0.5*delta_T, U1, U2, U12,gamma1, gamma2)
             nsum[i,j] = (2*EOM.n1+5*EOM.n2)
-            Z[i, j, :] = EOM.numerators(v2, v1, U2, U1, gamma2, gamma1, EOM.n2, EOM.n1)
+            A[i, j, :] = EOM.numerators(v2, v1, U2, U1, gamma2, gamma1, EOM.n2, EOM.n1)
+            EOM = Equations_of_motion(v1, v2, V, T + 0.5*delta_T, T -0.5*delta_T, U1, U2, U12, 0.00001, 0.00001)
+            B[i, j, :] = EOM.numerators(v2, v1, U2, U1, 0.00001, 0.00001, EOM.n2, EOM.n1)#EOM.numerators(v1, v2, U1, U2, gamma1, gamma2, EOM.n1, EOM.n2)
+            Z[i, j, :] = A[i, j, :] -B[i, j, :] 
             I, Q = EOM.Current(EOM.n1, EOM.n2)
             I_values[i, j] = I*100
             Q_values[i, j] = Q*100
@@ -232,5 +249,53 @@ if movie_SD_vary_DT:
 ###############################################
 ###############################################
 
-print('DONE')
 
+if calculate_transport_coeffs:
+    output = 'U1_{}_U2_{}_U12_{}_T_{}_g_{}'.format(U1, U2,U12,T, gamma)
+    for veq in tqdm(v_range):
+        EOM = Equations_of_motion( veq+delta_v/2,veq-delta_v/2,V,T+0.5*delta_T,T-0.5*delta_T,U1,U2,U12,gamma1,gamma2)
+        G,S,kappa = EOM.transport_coeffs_ints()
+        ZT = T*G*pow(S,2)/kappa
+        if compute_EOMH:
+            dens_EOMH = optimize.root( EOM.solve_H, [0.5,0.5], method='hybr').x
+            G_H,S_H,kappa_H = EOM.transport_coeffs_ints_H(dens_EOMH[0],dens_EOMH[1])
+            ZT_H = T*G_H*pow(S_H,2)/kappa_H
+            list_file.append((veq,G*np.pi,S,kappa*np.pi,ZT,G_H*np.pi,S_H,kappa_H*np.pi,ZT_H))
+        else:
+            list_file.append((veq,G*np.pi,S,kappa*np.pi,ZT))
+    plot_calculate_transport_coeffs(list_file,output)
+
+
+if Spectral_function_G01:
+    v1=-0.3
+    v2=-0.5
+    EOM = Equations_of_motion(v1, v2, V, T, T , U1, U2, U12, gamma1, gamma2)
+    _correlators_ = optimize.root( EOM.Solve_coupled_system, [0,0,0,0,0,0,0,0,0], method='hybr').x
+    #n_approxG1 = optimize.root( EOM.dens_approx_G, [EOM.n1,EOM.n2], method='hybr').x
+    print('EOM n1 = {}, n2= {}'.format(EOM.n1,EOM.n2))
+    print(_correlators_)
+
+
+if compute_vHxci:
+    n1_values = np.zeros((len(v1_range), len(v2_range))) # For z1 to z6
+    n2_values = np.zeros((len(v1_range), len(v2_range)))  # For z1 to z6
+    vHxc1 = np.zeros((len(v1_range), len(v2_range)))
+    vHxc2 = np.zeros((len(v1_range), len(v2_range)))
+    for i, v1 in enumerate(v1_range):
+        print(v1)
+        for j, v2 in enumerate(v2_range):
+            EOM = Equations_of_motion(v1, v2, V, T + 0.5*delta_T, T -0.5*delta_T, U1, U2, U12,gamma1, gamma2)
+            n1_int = EOM.n1
+            n2_int = EOM.n2
+            EOM = Equations_of_motion(0., 0., V, T + 0.5*delta_T, T -0.5*delta_T, 0., 0., 0., gamma1, gamma2)
+            vs = optimize.root(EOM.solve_vs,[v1,v2], args =(EOM.n1,EOM.n2) ).x
+            n1_values[i, j] = 2*n1_int
+            n2_values[i, j] = 2*n2_int
+            vHxc1[i, j] = v1-vs[0]
+            vHxc2[i, j] = v2-vs[1]
+    output = 'U1_{}_U2_{}_U12_{}_T_{}_g1_{}_g2_{}_dT_{}_V_{}'.format(U1, U2, U12, T, gamma1, gamma2,delta_T,V)
+    plot_colormap_vHxci(n1_values, n2_values, vHxc1,vHxc2,'','vHxc',output)
+
+
+
+print('DONE')
