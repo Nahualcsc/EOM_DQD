@@ -94,9 +94,9 @@ def plot_calculate_spectral_function(list_file,output):
     axs.plot(w,A01, '--', color='blue',label = '$A_1$',linewidth=1.)
     axs.plot(w,A02, '--', color='red',label = '$A_2$',linewidth=1.)
     data_NCA = np.loadtxt('A_NCA_g=0.05.txt', delimiter=' ')
-    w_NCA = data_NCA[:, 0]  # Assuming the first column is the x-axis data
-    A_NCA = data_NCA[:, 1]  # Assuming the second column is the y-axis data
-    axs.plot(w_NCA, A_NCA, '--', color='black', label='NCA', linewidth=1.5)
+    #w_NCA = data_NCA[:, 0]  # Assuming the first column is the x-axis data
+    #A_NCA = data_NCA[:, 1]  # Assuming the second column is the y-axis data
+    #axs.plot(w_NCA, A_NCA, '--', color='black', label='NCA', linewidth=1.5)
     axs.set_ylabel('$A(\\omega)$', fontsize=16)
     axs.set_xlabel('$\\omega$', fontsize=16)
     fig.tight_layout()
