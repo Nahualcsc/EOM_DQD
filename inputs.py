@@ -1,20 +1,17 @@
 import numpy as np
 
-T=0.5
-gamma = 0.1
+T=0.1
+gamma = 0.2
 V= 0.
 delta_T = 0.0
-U1 = 2. 
-U2 =  3
-U12 = 3.
+U1 = 1. 
+U2 =  1.
+U12 = 1.
 
 
 
-save_data = True
-compute_EOMH= True
-#implemented for: calculate_densities_vs_gate, calculate_spectral_function
-
-
+save_data = False
+compute_EOMH= False
 
 ## uncoment the lines under the calculation to perform 
 
@@ -27,10 +24,25 @@ calculate_spectral_function = False
 #v1 = -0.5*U1-U12
 #v2 = -0.5*U2-U12
 
+calculate_transport_coeffs = False
+#v_range = np.linspace(-4,2,250)
+#delta_v = 0.
+
 colormap_spectral_function = False 
-#w_range = np.linspace(-4,4,300)
-#U12_range = np.linspace(0, 3.5, 250) 
+#w_range = np.linspace(-3,3,300)
+#U12_range = np.linspace(0, 4., 250) 
+#delta_v = 0.
 ## at ph , to change v1,v2 do it at line 80 of main.py
+
+
+colormaps_transport_coeffs_vary_U12 = False
+#delta_v = 0.
+#v_range = np.linspace(-5,2,100)
+#U12_range = np.linspace(0, 4., 250) 
+
+colormaps_transport_coeffs_vary_dv = False
+#v_range = np.linspace(-5,2,100)
+#dv_range = np.linspace(-2, 2., 250) 
 
 movie_spectral_function_vary_dv = False
 #dv_range = np.linspace(0 , 2, 30)
@@ -38,6 +50,10 @@ movie_spectral_function_vary_dv = False
 movie_spectral_function_vary_V = False
 #delta_v = 0.
 #V_range = np.linspace(0 , 2, 20)
+
+movie_spectral_function_vary_dv = False
+#dv_range = np.linspace(0 , 2, 30)
+
 
 colormaps_currents = False
 #delta_v = 0.
@@ -71,15 +87,11 @@ movie_SD_vary_DT = False
 #DT_range = np.linspace(0.01, T-0.02, 40)
 
 
-calculate_transport_coeffs = False
-#v_range = np.linspace(-4,2,50)
-#delta_v = 0.
+Spectral_function_G01 = False
 
 
 
-
-#dont use, still need to be fixed
-#compute_vHxci = False
+compute_vHxci = False
 #v1_range = np.linspace(-6, 1., 100)
 #v2_range = np.linspace(-6, 1., 100)
 
