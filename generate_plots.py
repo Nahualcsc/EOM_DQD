@@ -80,7 +80,7 @@ def plot_calculate_spectral_function(list_file,output):
     fig, axs = plt.subplots(1, 1, figsize=(6, 5), sharex=True)
     if compute_EOMH:
         w, A01, A02,A0, AH_1, AH_2, AH= zip(*list_file)
-        axs.plot(w,[AHa/2 for AHa in AH], '-', color='gray',label = 'A/2 EOM H',linewidth=1.5)
+        axs.plot(w,AH, '-', color='gray',label = 'A EOM H',linewidth=1.5)
         if save_data:
             data = np.column_stack((w, A01, A02,A0, AH_1, AH_2, AH))
             np.savetxt('Aw/A_{}.txt'.format(output), data, delimiter=' ', header='## w, A1 EOM0, A2 EOM0, A1+A2 EOM0, A1 H, A2 H, A1+A2 H', comments='')
@@ -93,10 +93,10 @@ def plot_calculate_spectral_function(list_file,output):
     axs.plot(w,A0, '-', color='orange',label = 'A EOM 0',linewidth=1.5)
     axs.plot(w,A01, '--', color='blue',label = '$A_1$',linewidth=1.)
     axs.plot(w,A02, '--', color='red',label = '$A_2$',linewidth=1.)
-    #data_NCA = np.loadtxt('A_NCA_g=0.05.txt', delimiter=' ')
-    #w_NCA = data_NCA[:, 0]  # Assuming the first column is the x-axis data
-    #A_NCA = data_NCA[:, 1]  # Assuming the second column is the y-axis data
-    #axs.plot(w_NCA, A_NCA, '--', color='black', label='NCA', linewidth=1.5)
+    data_NCA = np.loadtxt('A_NCA_g=0.05.txt', delimiter=' ')
+    w_NCA = data_NCA[:, 0]  # Assuming the first column is the x-axis data
+    A_NCA = data_NCA[:, 1]  # Assuming the second column is the y-axis data
+    axs.plot(w_NCA, A_NCA, '--', color='black', label='NCA', linewidth=1.5)
     axs.set_ylabel('$A(\\omega)$', fontsize=16)
     axs.set_xlabel('$\\omega$', fontsize=16)
     fig.tight_layout()
@@ -298,6 +298,46 @@ def plot_calculate_transport_coeffs(list_file,output):
     fig.tight_layout()
     axs[0,0].legend(loc='upper left')
     fig.savefig('./transport_coeffs/GSk_V_{}_U1_{}_U2_{}_U12_{}_T_{}_g1_{}_g2_{}_dv_{}.png'.format(V,U1,U2,U12,T,gamma1,gamma2,delta_v), dpi=300)
+
+
+
+
+
+def plot_colormaps_transport_coeffs(v_range,Y_range,G,S,kappa ,ZT,title1,Y_label,folder,output):
+    if not os.path.exists('colormaps'): os.makedirs('colormaps')
+
+    fontsize = 20 
+    fig, axs = plt.subplots(2, 2, figsize=(14,14))
+    fig.suptitle(title1, fontsize=16 )
+    c1 = axs[0,0].imshow(G, extent=[v_range.min(), v_range.max(), Y_range.min(), Y_range.max()], origin='lower', aspect='auto', cmap='inferno')
+    c2 = axs[0,1].imshow(S, extent=[v_range.min(), v_range.max(), Y_range.min(), Y_range.max()], origin='lower', aspect='auto', cmap='inferno')
+    c3 = axs[1,0].imshow(kappa, extent=[v_range.min(), v_range.max(), Y_range.min(), Y_range.max()], origin='lower', aspect='auto', cmap='inferno')
+    c4 = axs[1,1].imshow(ZT, extent=[v_range.min(), v_range.max(), Y_range.min(), Y_range.max()], origin='lower', aspect='auto', cmap='inferno')
+    fig.colorbar(c1, ax=axs[0,0]).ax.tick_params(labelsize=fontsize)
+    fig.colorbar(c2, ax=axs[0,1]).ax.tick_params(labelsize=fontsize)
+    fig.colorbar(c3, ax=axs[1,0]).ax.tick_params(labelsize=fontsize)
+    fig.colorbar(c4, ax=axs[1,1]).ax.tick_params(labelsize=fontsize)
+
+    axs[0,0].tick_params(axis='y', which='major', labelsize=fontsize)
+    axs[1,0].tick_params(axis='both', which='major', labelsize=fontsize)
+    axs[1,1].tick_params(axis='x', which='major', labelsize=fontsize)
+    axs[0, 0].set_xticklabels([])
+    axs[1, 1].set_yticklabels([])
+    axs[0, 1].set_xticklabels([])
+    axs[0, 1].set_yticklabels([])
+    axs[0,0].set_ylabel(Y_label, fontsize=fontsize)
+    axs[1,0].set_ylabel(Y_label, fontsize=fontsize)
+    axs[1,0].set_xlabel('$v$', fontsize=fontsize)
+    axs[1,1].set_xlabel('$v$', fontsize=fontsize)
+    axs[0,0].text(0.9, 0.05, '$G/G_0$', transform=axs[0,0].transAxes, ha='center', va='center', color='white', fontsize=fontsize)
+    axs[0,1].text(0.9, 0.05, '$S$', transform=axs[0,1].transAxes, ha='center', va='center', color='white', fontsize=fontsize)
+    axs[1,0].text(0.9, 0.05, '$\\kappa/G_0$', transform=axs[1,0].transAxes, ha='center', va='center', color='white', fontsize=fontsize)
+    axs[1,1].text(0.9, 0.05, '$ZT$', transform=axs[1,1].transAxes, ha='center', va='center', color='white', fontsize=fontsize)
+    fig.subplots_adjust(wspace=0.15, hspace=0.3) 
+    fig.tight_layout(pad=1.0)  
+    fig.savefig('./{}/tr_coeff_{}.png'.format(folder,output), dpi=300)
+
+
 
 
 
