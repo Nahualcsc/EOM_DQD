@@ -62,12 +62,15 @@ if calculate_spectral_function:
         A_2 = EOM.Ai(w,v2, v1, U2, U1, gamma2, gamma1,EOM.n1,EOM.n2)
         A0 = (A_1+A_2)
         if compute_EOMH:
-            AH_1 = EOM.Ai_Hartree(w, v1, U1, gamma1,dens_EOMH[0],dens_EOMH[1])
-            AH_2 = EOM.Ai_Hartree(w, v2, U2, gamma2,dens_EOMH[1],dens_EOMH[0])
+            #AH_1 = EOM.Ai_Hartree(w, v1, U1, gamma1,dens_EOMH[0],dens_EOMH[1])
+            #AH_2 = EOM.Ai_Hartree(w, v2, U2, gamma2,dens_EOMH[1],dens_EOMH[0])
+            #AH = (AH_1+AH_2)
+            G01 = EOM.G0( w,v1, v2, U1, U2, gamma1, gamma2,EOM.n1,EOM.n2, 0.0001j).real
+            G02 = EOM.G0( w,v2, v1, U2, U1, gamma2, gamma1,EOM.n2,EOM.n1, 0.0001j).real
+            AH_1 = -1/(np.pi)*G01/(1+G01*0.5j*gamma).imag
+            AH_2 = -1/(np.pi)*G02/(1+G02*0.5j*gamma).imag
+            print(AH_2)
             AH = (AH_1+AH_2)
-            #G01 = EOM.G0( w,v1, v2, U1, U2, gamma1, gamma2,EOM.n1,EOM.n2, 0.001j).real
-            #G02 = EOM.G0( w,v2, v1, U2, U1, gamma2, gamma1,EOM.n2,EOM.n1, 0.001j).real
-            #AH = -2/(np.pi)*(((G01)/(1+G01*2j*gamma)).imag +((G02)/(1+G02*2j*gamma)).imag)
             list_file.append((w,A_1,A_2,A0,AH_1,AH_2,AH))
         else: list_file.append((w,A_1,A_2,A0))
     norma_A1_O, err = integrate.quad(EOM.Ai, -np.infty, np.infty,  args =(v1,v2, U1,U2, gamma1,gamma2,EOM.n1,EOM.n2))
@@ -90,6 +93,7 @@ def compute_Aw(w_range,U12_range,V,delta_v):
             v1 = -0.5*U1-U12
             v2 = -0.5*U2-U12
         elif movie_spectral_function_vary_dv:
+            print(delta_v)
             v1 = -0.5*U1-U12+0.5*delta_v
             v2 = -0.5*U2-U12-0.5*delta_v
         for j, w in enumerate(w_range):
@@ -127,7 +131,7 @@ if movie_spectral_function_vary_dv:
 
 ###############################################
 ###############################################
-def compute_olormaps_currents(v_range,V_range,U12):
+def compute_colormaps_currents(v_range,V_range,U12):
     dens_0 =  np.zeros((len(V_range), len(v_range)))
     dens_1 =  np.zeros((len(V_range), len(v_range)))
     I_EOM0 =  np.zeros((len(V_range), len(v_range)))
@@ -145,7 +149,7 @@ def compute_olormaps_currents(v_range,V_range,U12):
 
 if colormaps_currents:
     output = 'U1_{}_U2_{}_U12_{}_T_{}_g1_{}_g2_{}_dT_{}_dv_{}'.format(U1, U2, U12, T, gamma1, gamma2,delta_T,dv)
-    dens_0,dens_1,I_EOM0,Q_EOM0 = compute_olormaps_currents(v_range,V_range,U12)
+    dens_0,dens_1,I_EOM0,Q_EOM0 = compute_colormaps_currents(v_range,V_range,U12)
     plot_colormaps_currents(v_range,V_range,dens_0,dens_1,I_EOM0,Q_EOM0,'','colormaps',output)
 
 
@@ -154,7 +158,7 @@ if movie_currents_vary_U12:
     output = 'U1_{}_U2_{}_T_{}_DT_{}_g1_{}_g2_{}_dv_{}_U12_{}_to_{}'.format(U1, U2, T, delta_T, gamma1, gamma2,delta_v,U12_range[0],U12_range[-1])
     folder = 'movies'
     for U12 in tqdm(U12_range):
-        dens_0,dens_1,I_EOM0,Q_EOM0 = compute_olormaps_currents(v_range,V_range,U12)
+        dens_0,dens_1,I_EOM0,Q_EOM0 = compute_colormaps_currents(v_range,V_range,U12)
         title = '$U_{12}$ = '+str(round(U12,3))
         plot_colormaps_currents(v_range,V_range,dens_0,dens_1,I_EOM0,Q_EOM0,title,folder,str(U12))
     create_movies_colormap_currents(output)
@@ -254,7 +258,7 @@ if calculate_transport_coeffs:
     output = 'U1_{}_U2_{}_U12_{}_T_{}_g_{}'.format(U1, U2,U12,T, gamma)
     for veq in tqdm(v_range):
         EOM = Equations_of_motion( veq+delta_v/2,veq-delta_v/2,V,T+0.5*delta_T,T-0.5*delta_T,U1,U2,U12,gamma1,gamma2)
-        G,S,kappa = EOM.transport_coeffs_ints()
+        G,S,kappa = EOM.transport_coeffs()
         ZT = T*G*pow(S,2)/kappa
         if compute_EOMH:
             dens_EOMH = optimize.root( EOM.solve_H, [0.5,0.5], method='hybr').x
@@ -264,6 +268,55 @@ if calculate_transport_coeffs:
         else:
             list_file.append((veq,G*np.pi,S,kappa*np.pi,ZT))
     plot_calculate_transport_coeffs(list_file,output)
+
+
+
+def compute_colormaps_transport_coeffs_vary_U12(v_range,U12_range):
+    G =  np.zeros((len(U12_range), len(v_range)))
+    S =  np.zeros((len(U12_range), len(v_range)))
+    kappa =  np.zeros((len(U12_range), len(v_range)))
+    ZT =  np.zeros((len(U12_range), len(v_range)))
+    for i, U12 in enumerate(tqdm(U12_range)):
+        for j, v in enumerate(v_range):
+            EOM = Equations_of_motion(v+delta_v/2,v-delta_v/2, V, T + 0.5 * delta_T, T - 0.5 * delta_T, U1, U2, U12, gamma1, gamma2)
+            G_,S_,kappa_ = EOM.transport_coeffs()
+            ZT_ = T*G_*pow(S_,2)/kappa_
+            G[i, j] = G_
+            S[i, j] = S_
+            kappa[i, j] = kappa_
+            ZT[i, j] = ZT_
+    return G,S,kappa ,ZT
+
+def compute_colormaps_transport_coeffs_vary_dv(v_range,dV_range):
+    G =  np.zeros((len(dv_range), len(v_range)))
+    S =  np.zeros((len(dv_range), len(v_range)))
+    kappa =  np.zeros((len(dv_range), len(v_range)))
+    ZT =  np.zeros((len(dv_range), len(v_range)))
+    for i, delta_v in enumerate(tqdm(dv_range)):
+        for j, v in enumerate(v_range):
+            EOM = Equations_of_motion(v+delta_v/2,v-delta_v/2, V, T + 0.5 * delta_T, T - 0.5 * delta_T, U1, U2, U12, gamma1, gamma2)
+            G_,S_,kappa_ = EOM.transport_coeffs()
+            ZT_ = T*G_*pow(S_,2)/kappa_
+            G[i, j] = G_
+            S[i, j] = S_
+            kappa[i, j] = kappa_
+            ZT[i, j] = ZT_
+    return G,S,kappa ,ZT
+
+if colormaps_transport_coeffs_vary_U12:
+    output = 'U1_{}_U2_{}_T_{}_g_{}_dv_{}_U12_from_{}_to_{}'.format(U1, U2, T, gamma1,delta_v,U12_range[0],U12_range[-1])
+    title = '$U_1=$'+str(U1)+', $U_2=$'+str(U2)+', $\\delta v=$'+str(delta_v)+', $T=$'+str(T)+', $\\gamma=$'+str(gamma)
+    G,S,kappa ,ZT = compute_colormaps_transport_coeffs_vary_U12(v_range,U12_range)
+    plot_colormaps_transport_coeffs(v_range,U12_range,G,S,kappa ,ZT,title,'$U_{12}$','colormaps',output)
+
+if colormaps_transport_coeffs_vary_dv:
+    output = 'U1_{}_U2_{}_U12_{}_T_{}_g_{}_dv_from_{}_to_{}'.format(U1, U2, U12, T, gamma1,dv_range[0],dv_range[-1])
+    title = '$U_1=$'+str(U1)+', $U_2=$'+str(U2)+', $U_{{12}}=$'+str(U12)+', $T=$'+str(T)+', $\\gamma=$'+str(gamma)
+
+
+
+    G,S,kappa ,ZT = compute_colormaps_transport_coeffs_vary_dv(v_range,dv_range)
+    plot_colormaps_transport_coeffs(v_range,dv_range,G,S,kappa ,ZT,title,'$\\delta v$','colormaps',output)
 
 
 if Spectral_function_G01:
@@ -299,3 +352,4 @@ if compute_vHxci:
 
 
 print('DONE')
+
